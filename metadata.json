@@ -1,0 +1,8 @@
+{
+  "name": "MediOrder",
+  "description": "Professional healthcare procurement and logistics platform for Malaysian medical clinics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
