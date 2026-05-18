@@ -102,7 +102,7 @@ export default function Dashboard() {
       {/* Welcome Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Health Clinic Dashboard</h1>
+          <h1 className="text-3xl font-bold text-slate-900">MediOrder Dashboard</h1>
           <p className="text-slate-500 mt-1">Welcome back, Dr. Aisha. Here is what is happening today.</p>
         </div>
         <div className="flex gap-3">

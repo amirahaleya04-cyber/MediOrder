@@ -84,7 +84,7 @@ export default function OrderPreview() {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-medical-600 flex items-center justify-center text-white font-bold text-xl">M</div>
-                <h1 className="text-2xl font-display font-bold tracking-tight">MediOrder Logistics</h1>
+                <h1 className="text-2xl font-display font-bold tracking-tight">MediOrder</h1>
               </div>
               <div className="text-sm text-slate-500 max-w-xs leading-relaxed">
                 Level 15, Menara Medical,<br />

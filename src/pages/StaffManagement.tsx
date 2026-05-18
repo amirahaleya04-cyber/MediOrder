@@ -66,7 +66,7 @@ export default function StaffManagement() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Staff Management</h1>
+          <h1 className="text-3xl font-bold text-slate-900">MediOrder Personnel</h1>
           <p className="text-slate-500 mt-1">Manage permissions and contact details for your clinic personnel.</p>
         </div>
         <button 

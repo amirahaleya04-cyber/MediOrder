@@ -94,7 +94,7 @@ export default function CreateOrder() {
 
       <div className="flex items-center justify-between mb-10">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Create Purchase Order</h1>
+          <h1 className="text-3xl font-bold text-slate-900">Create MediOrder PO</h1>
           <p className="text-slate-500 mt-1">Draft a new request for medical supplies.</p>
         </div>
         <div className="flex items-center gap-4">

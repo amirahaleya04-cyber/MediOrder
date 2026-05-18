@@ -61,7 +61,7 @@ export default function MedicineCatalog() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Medicine Catalog</h1>
+          <h1 className="text-3xl font-bold text-slate-900">MediOrder Medicine Catalog</h1>
           <p className="text-slate-500 mt-1">Browse and search clinic inventory and supplies.</p>
         </div>
         <div className="flex gap-3">

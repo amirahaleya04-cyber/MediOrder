@@ -78,7 +78,7 @@ export default function Faq() {
         <div className="w-16 h-16 rounded-2xl bg-medical-50 text-medical-600 flex items-center justify-center mx-auto shadow-sm">
           <HelpCircle size={32} />
         </div>
-        <h1 className="text-4xl font-bold text-slate-900">Support & Knowledge Base</h1>
+        <h1 className="text-4xl font-bold text-slate-900">MediOrder Support</h1>
         <p className="text-slate-500 max-w-xl mx-auto">
           Need help? Explore our frequently asked questions or contact our dedicated clinical logistics team.
         </p>

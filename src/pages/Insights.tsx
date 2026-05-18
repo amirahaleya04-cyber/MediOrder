@@ -49,7 +49,7 @@ export default function Insights() {
     <div className="max-w-7xl mx-auto space-y-8 pb-20">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Procurement Insights</h1>
+          <h1 className="text-3xl font-bold text-slate-900">MediOrder Insights</h1>
           <p className="text-slate-500 mt-1">Data-driven analysis of your clinic's supply chain.</p>
         </div>
         <div className="flex gap-3">
