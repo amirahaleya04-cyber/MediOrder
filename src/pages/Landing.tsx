@@ -25,8 +25,8 @@ const Nav = () => (
       <a href="#testimonials" className="hover:text-medical-600 transition-colors">Success Stories</a>
     </div>
     <div className="flex items-center gap-4">
-      <Link to="/dashboard" className="text-sm font-semibold text-slate-900">Log In</Link>
-      <Link to="/dashboard" className="bg-medical-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-medical-700 transition-all shadow-lg shadow-medical-600/20">
+      <Link to="/login" className="text-sm font-semibold text-slate-900">Log In</Link>
+      <Link to="/register" className="bg-medical-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-medical-700 transition-all shadow-lg shadow-medical-600/20">
         Get Started
       </Link>
     </div>
@@ -64,9 +64,9 @@ const Hero = () => {
             Automate inventory, streamline purchase orders, and ensure zero-stockouts with AI-powered forecasting.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/dashboard" className="w-full sm:w-auto px-8 py-4 bg-medical-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-medical-700 transition-all shadow-xl shadow-medical-600/25">
-              Launch Platform <ArrowRight size={20} />
-            </Link>
+              <Link to="/login" className="w-full sm:w-auto px-8 py-4 bg-medical-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-medical-700 transition-all shadow-xl shadow-medical-600/25">
+                 Launch Platform <ArrowRight size={20} />
+              </Link>
             <button 
               onClick={handleScheduleDemo}
               className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-2xl font-bold hover:bg-slate-50 transition-all"
@@ -214,7 +214,7 @@ const Solutions = () => (
               Simplified ordering for independent GPs. Get the same wholesale rates as big hospitals without the volume requirements.
             </p>
           </div>
-          <Link to="/dashboard" className="mt-8 text-medical-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+          <Link to="/register" className="mt-8 text-medical-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
             Get Started <ArrowRight size={16} />
           </Link>
         </div>
@@ -264,7 +264,7 @@ const Testimonials = () => (
   <section id="testimonials" className="py-24 bg-slate-50">
     <div className="max-w-7xl mx-auto px-6">
       <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-slate-900">Trusted by Malaysias Top Practices</h2>
+        <h2 className="text-3xl font-bold text-slate-900">Trusted by Malaysia's Top Practices</h2>
         <p className="text-slate-500 mt-2">Hear from the surgeons and administrators using MediOrder daily.</p>
       </div>
 

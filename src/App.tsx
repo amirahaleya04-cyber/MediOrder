@@ -19,8 +19,14 @@ import {
   Building2,
   CheckCircle2,
   Clock,
-  AlertCircle
+  AlertCircle,
+  ClipboardList
 } from 'lucide-react';
+
+// Context & Guards
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { ProtectedRoute, PublicOnlyRoute } from './components/ProtectedRoute';
+import { SupabaseBanner } from './components/SupabaseBanner';
 
 // Pages
 import Landing from './pages/Landing';
@@ -32,26 +38,35 @@ import ClinicProfile from './pages/ClinicProfile';
 import StaffManagement from './pages/StaffManagement';
 import SupplierManagement from './pages/SupplierManagement';
 import MedicineCatalog from './pages/MedicineCatalog';
+import ClinicInventory from './pages/ClinicInventory';
 import OrderHistory from './pages/OrderHistory';
 import Insights from './pages/Insights';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 const Sidebar = ({ isOpen, toggle }: { isOpen: boolean, toggle: () => void }) => {
   const location = useLocation();
+  const { user, signOut } = useAuth();
+
   const navItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: BarChart3, label: 'Insights', path: '/insights' },
     { icon: FilePlus, label: 'Create PO', path: '/create-po' },
     { icon: FileText, label: 'Order History', path: '/orders' },
-    { icon: Package, label: 'Medicine Catalog', path: '/catalog' },
+    { icon: ClipboardList, label: 'Clinic Inventory', path: '/inventory' },
+    { icon: Package, label: 'Supplier Catalog', path: '/catalog' },
     { icon: User, label: 'Staff / PIC', path: '/staff' },
     { icon: Building2, label: 'Suppliers', path: '/suppliers' },
     { icon: Settings, label: 'Clinic Profile', path: '/profile' },
     { icon: HelpCircle, label: 'Support & FAQ', path: '/faq' },
   ];
 
-  const handleSignOut = () => {
-    toast.success('Signed out successfully');
+  const handleSignOut = async () => {
+    await signOut();
   };
+
+  const displayName = user?.user_metadata?.full_name || user?.email || 'User';
+  const displayClinic = user?.user_metadata?.clinic_name || 'My Clinic';
 
   return (
     <>
@@ -116,18 +131,17 @@ const Sidebar = ({ isOpen, toggle }: { isOpen: boolean, toggle: () => void }) =>
           >
             <User size={20} />
             <div className="flex-1 min-w-0 text-left">
-              <p className="text-sm font-medium truncate">Dr. Aisha Khan</p>
-              <p className="text-xs truncate text-slate-400">City Clinic KL</p>
+              <p className="text-sm font-medium truncate">{displayName}</p>
+              <p className="text-xs truncate text-slate-400">{displayClinic}</p>
             </div>
           </Link>
-          <Link 
-            to="/" 
+          <button
             onClick={handleSignOut}
-            className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-red-600 transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-red-600 transition-colors cursor-pointer rounded-xl hover:bg-red-50/50"
           >
             <LogOut size={20} />
             <span className="text-sm font-medium">Sign Out</span>
-          </Link>
+          </button>
         </div>
       </motion.aside>
     </>
@@ -136,6 +150,7 @@ const Sidebar = ({ isOpen, toggle }: { isOpen: boolean, toggle: () => void }) =>
 
 const Header = ({ onToggleSidebar }: { onToggleSidebar: () => void }) => {
   const [search, setSearch] = useState('');
+  const { user } = useAuth();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,6 +158,17 @@ const Header = ({ onToggleSidebar }: { onToggleSidebar: () => void }) => {
       toast.info(`Searching for: ${search}`);
     }
   };
+
+  const displayName = user?.user_metadata?.full_name || user?.email || 'User';
+  
+  // Get initials
+  const initials = displayName
+    .split(' ')
+    .filter(Boolean)
+    .map((name: string) => name[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase() || 'US';
 
   return (
     <header className="h-16 bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30 flex items-center justify-between px-6">
@@ -168,10 +194,10 @@ const Header = ({ onToggleSidebar }: { onToggleSidebar: () => void }) => {
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
         </button>
         <button 
-          onClick={() => toast.info('User: Dr. Aisha Khan')}
+          onClick={() => toast.info(`User: ${displayName} (${user?.email || 'Demo session'})`)}
           className="w-8 h-8 rounded-full bg-medical-50 text-medical-600 flex items-center justify-center font-bold text-xs ring-2 ring-medical-600/10 hover:ring-medical-600/30 transition-all"
         >
-          AK
+          {initials}
         </button>
       </div>
     </header>
@@ -181,15 +207,16 @@ const Header = ({ onToggleSidebar }: { onToggleSidebar: () => void }) => {
 const AppShell = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const location = useLocation();
-  const isLandingPage = location.pathname === '/';
+  const isAuthOrLandingPage = ['/', '/login', '/register'].includes(location.pathname);
 
-  if (isLandingPage) return <>{children}</>;
+  if (isAuthOrLandingPage) return <>{children}</>;
 
   return (
     <div className="flex min-h-screen bg-[#F8FAFC]">
       <Sidebar isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} />
       <div className="flex-1 flex flex-col relative overflow-hidden">
         <Header onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+        <SupabaseBanner />
         <main className="flex-1 p-6 overflow-y-auto">
           {children}
         </main>
@@ -200,24 +227,82 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
 
 export default function App() {
   return (
-    <>
+    <AuthProvider>
       <Toaster position="top-right" richColors />
       <AppShell>
         <Routes>
+          {/* Public Pages */}
           <Route path="/" element={<Landing />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/create-po" element={<CreateOrder />} />
-          <Route path="/po-preview" element={<OrderPreview />} />
-          <Route path="/orders" element={<OrderHistory />} />
-          <Route path="/insights" element={<Insights />} />
           <Route path="/faq" element={<Faq />} />
-          <Route path="/profile" element={<ClinicProfile />} />
-          <Route path="/staff" element={<StaffManagement />} />
-          <Route path="/suppliers" element={<SupplierManagement />} />
-          <Route path="/catalog" element={<MedicineCatalog />} />
+
+          {/* Guest Only Auth Pages */}
+          <Route path="/login" element={
+            <PublicOnlyRoute>
+              <Login />
+            </PublicOnlyRoute>
+          } />
+          <Route path="/register" element={
+            <PublicOnlyRoute>
+              <Register />
+            </PublicOnlyRoute>
+          } />
+
+          {/* Secure Protected Clinical Pages */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/create-po" element={
+            <ProtectedRoute>
+              <CreateOrder />
+            </ProtectedRoute>
+          } />
+          <Route path="/po-preview" element={
+            <ProtectedRoute>
+              <OrderPreview />
+            </ProtectedRoute>
+          } />
+          <Route path="/orders" element={
+            <ProtectedRoute>
+              <OrderHistory />
+            </ProtectedRoute>
+          } />
+          <Route path="/insights" element={
+            <ProtectedRoute>
+              <Insights />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <ClinicProfile />
+            </ProtectedRoute>
+          } />
+          <Route path="/staff" element={
+            <ProtectedRoute>
+              <StaffManagement />
+            </ProtectedRoute>
+          } />
+          <Route path="/suppliers" element={
+            <ProtectedRoute>
+              <SupplierManagement />
+            </ProtectedRoute>
+          } />
+          <Route path="/inventory" element={
+            <ProtectedRoute>
+              <ClinicInventory />
+            </ProtectedRoute>
+          } />
+          <Route path="/catalog" element={
+            <ProtectedRoute>
+              <MedicineCatalog />
+            </ProtectedRoute>
+          } />
+
+          {/* Fallback Catch */}
           <Route path="*" element={<Landing />} />
         </Routes>
       </AppShell>
-    </>
+    </AuthProvider>
   );
 }
